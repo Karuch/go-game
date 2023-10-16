@@ -1,6 +1,6 @@
 package main
 
-import "internal/server"
+import "main/internal/server"
 
 func main(){
 	server.Server()
