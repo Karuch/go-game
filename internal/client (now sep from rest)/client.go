@@ -19,8 +19,15 @@ func main(){
 
 	client := resty.New()
 
-	resp, err := client.R().EnableTrace().Get("http://127.0.0.1:8080/ping")
+	
+	resp, err := client.R().
+	SetBody(map[string]interface{}{"guess": test}).
+	SetResult("Success").    // or SetResult(AuthSuccess{}).
+	SetError("Error").       // or SetError(AuthError{}).
+	Post("http://127.0.0.1:8080/ping")
 
+
+	
 	// Explore response object
 	//fmt.Println("Response Info:")
 	//fmt.Println("  Status Code:", resp.StatusCode())
