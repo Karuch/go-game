@@ -9,7 +9,7 @@ import (
 func HangmanHandler(){
 	
 	//initiallize blank and word list
-	var word string = "Hello"
+	var word string = "He llo"
 	visable_array := strings.Split(word, "")
 	inVisable_array := make([]string, len(visable_array))
 	copy(inVisable_array[:], visable_array[:])
@@ -20,9 +20,9 @@ func HangmanHandler(){
 
 	
 	//input validator
-	var guess string = "He.llo1"
+	var guess string = "h e llo"
 	for _, char := range guess {
-		if !unicode.IsLetter(char) { //what about space?
+		if !unicode.IsLetter(char) && !unicode.IsSpace(char) { 
 			fmt.Printf("Non-letter character: %c\n", char)
 		}
 	}
@@ -32,14 +32,20 @@ func HangmanHandler(){
 	if len(guess) <= 0 {
 		//DO SOMETHING
 	} else if len(guess) < 1 {
-		if guess == word {
-			//DO SOMETHING
+		if strings.EqualFold(guess, word) {
+			//DO SOMETHING IF WORD == GUESS i think i will wait for loop
 		} else {
-			//DO SOMETHING
+			//DO SOMETHING IN CASE NO OUTPUT i think i will wait for loop
 		}
 	} else {
 		//CASE ONE 1 LETTER
+		for index, _ := range visable_array {
+			if strings.EqualFold(guess, visable_array[index]) {
+				inVisable_array[index] = visable_array[index]
+			}
+		}
 	}
 
+	fmt.Println(inVisable_array)
 	
 }
