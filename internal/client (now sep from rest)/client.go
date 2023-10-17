@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/go-resty/resty/v2"
-	"github.com/yalp/jsonpath"
-	"encoding/json"
 	"bufio"
 	"os"
 )
@@ -13,19 +11,21 @@ func main(){
 	fmt.Println("dwd")
 
 	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan()
-	test := scanner.Text()
-	fmt.Println(test)
 
 	client := resty.New()
 
-	
-	resp, err := client.R().
-	SetBody(map[string]interface{}{"guess": test}).
-	SetResult("Success").    // or SetResult(AuthSuccess{}).
-	SetError("Error").       // or SetError(AuthError{}).
-	Post("http://127.0.0.1:8080/ping")
+	for 0 < 1 {
+		scanner.Scan()
+		test := scanner.Text()
+		resp, err := client.R().
+		SetBody(map[string]interface{}{"guess": test}).
+		SetResult("Success").    // or SetResult(AuthSuccess{}).
+		SetError("Error").       // or SetError(AuthError{}).
+		Post("http://127.0.0.1:8080/ping")
 
+		fmt.Println("Error:", err)
+		fmt.Println(resp)
+	}
 
 	
 	// Explore response object
@@ -37,12 +37,4 @@ func main(){
 	//fmt.Println("  Received At:", resp.ReceivedAt())
 	//fmt.Println("  Body       :\n", resp)
 	
-	fmt.Println("Error:", err)
-	allAuthors, err := jsonpath.Prepare("$.message")
-	
-	var bookstore interface{}
-	err = json.Unmarshal(resp.Body(), &bookstore)
-	authors, err := allAuthors(bookstore)
-	fmt.Println(authors)
-
 }

@@ -9,7 +9,9 @@ import (
 )
 
 func Server() {
+  
   r := gin.Default()
+  
   r.POST("/ping", func(c *gin.Context) {
     // Read the request body
     requestBody, err := c.GetRawData()
@@ -24,7 +26,8 @@ func Server() {
     authors, err := allAuthors(bookstore)
     fmt.Println(authors)
     // Respond with a message
-    c.JSON(http.StatusOK, gin.H{"message": "Request body received successfully"})
+    c.JSON(http.StatusOK, gin.H{"message": "Request body received successfully"}) //will return to clien the result of hangmanhandler
   }) 
+  
   r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
