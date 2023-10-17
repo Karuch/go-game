@@ -1,14 +1,22 @@
-package client
+package main
 
 import (
 	"fmt"
 	"github.com/go-resty/resty/v2"
 	"github.com/yalp/jsonpath"
 	"encoding/json"
+	"bufio"
+	"os"
 )
 
 func main(){
 	fmt.Println("dwd")
+
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	test := scanner.Text()
+	fmt.Println(test)
+
 	client := resty.New()
 
 	resp, err := client.R().EnableTrace().Get("http://127.0.0.1:8080/ping")
