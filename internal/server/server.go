@@ -4,6 +4,8 @@ import (
   "net/http"
   "fmt"
   "github.com/gin-gonic/gin"
+  "github.com/yalp/jsonpath"
+  "encoding/json"
 )
 
 func Server() {
@@ -16,7 +18,11 @@ func Server() {
         return
     }
     // Print the request body
-    fmt.Println(string(requestBody))
+    allAuthors, err := jsonpath.Prepare("$.guess")
+    var bookstore interface{}
+    err = json.Unmarshal(requestBody, &bookstore)
+    authors, err := allAuthors(bookstore)
+    fmt.Println(authors)
     // Respond with a message
     c.JSON(http.StatusOK, gin.H{"message": "Request body received successfully"})
   }) 
