@@ -6,10 +6,24 @@ import (
   "github.com/gin-gonic/gin"
   "github.com/yalp/jsonpath"
   "encoding/json"
+  "strings"
 )
 
 func Server() {
   
+	//initiallize blank and word list
+	var word string = "He llo"
+	visable_array := strings.Split(word, "")
+	inVisable_array := make([]string, len(visable_array))
+	copy(inVisable_array[:], visable_array[:])
+	for i := 0; i < len(inVisable_array); i++ {
+    if inVisable_array[i] != " " {
+		  inVisable_array[i] = "_"
+    }
+	}
+	fmt.Println(inVisable_array, visable_array)
+
+  //server
   r := gin.Default()
   
   r.POST("/ping", func(c *gin.Context) {
@@ -24,7 +38,16 @@ func Server() {
     var bookstore interface{}
     err = json.Unmarshal(requestBody, &bookstore)
     authors, err := allAuthors(bookstore)
-    fmt.Println(authors)
+    if str, ok := authors.(string); ok {
+      // Conversion was successful
+      // Now, str is a string containing the value.
+      fmt.Println(str)
+      one, two, three := HangmanHandler(inVisable_array, visable_array, word, str)
+      fmt.Println(one, two, three)
+    } else {
+      // Handle the case where authors is not a string.
+      fmt.Println("Conversion to string failed")
+    }
     // Respond with a message
     c.JSON(http.StatusOK, gin.H{"message": "Request body received successfully"}) //will return to clien the result of hangmanhandler
   }) 

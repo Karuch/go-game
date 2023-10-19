@@ -6,36 +6,34 @@ import (
 	"strings"
 )
 
-func HangmanHandler(){ //return new blank list state, return if word found or not -> then server looked
+func HangmanHandler(inVisable_array []string, visable_array []string, word string, guess string) (bool, []string, string) { //return new blank list state, return if word found or not -> then server looked
 	
-	//initiallize blank and word list
-	var word string = "He llo"
-	visable_array := strings.Split(word, "")
-	inVisable_array := make([]string, len(visable_array))
-	copy(inVisable_array[:], visable_array[:])
-	for i := 0; i < len(inVisable_array); i++ {
-		inVisable_array[i] = "_"
-	}
-	fmt.Println(inVisable_array, visable_array)
+	fmt.Println(inVisable_array, visable_array, word, guess)
 
-	
+	var info string;
 	//input validator
-	var guess string = "he llo"
 	for _, char := range guess {
 		if !unicode.IsLetter(char) && !unicode.IsSpace(char) { 
-			fmt.Printf("Non-letter character: %c\n", char)
+			info = "1" //case non-letter char
+			fmt.Println(info)
+			return false, inVisable_array, info
 		}
 	}
 
 
 	//result validator
 	if len(guess) <= 0 {
-		//DO SOMETHING
+		info = "2" //case nothing was entered (X should include space right now space alone will return 3)
+		fmt.Println(info)
+		return false, inVisable_array, info
 	} else if len(guess) > 1 {
 		if strings.EqualFold(guess, word) {
-			//DO SOMETHING IN CASE OUTPUT
+			info = "3"
+			fmt.Println(info)
+			copy(inVisable_array[:], visable_array[:])
+			return true, inVisable_array, info
 		} else {
-			//DO SOMETHING IN CASE NO OUTPUT 
+			return false, inVisable_array, info
 		}
 	} else {
 		//CASE ONE 1 LETTER
@@ -46,6 +44,16 @@ func HangmanHandler(){ //return new blank list state, return if word found or no
 		}
 	}
 
-	fmt.Println(inVisable_array)
-	
+	//case looking if all letters
+	for _, element := range inVisable_array {
+		fmt.Println(element)
+		if element == "_" {
+			info = "4" //case found _ in sentence means not complete
+			return false, inVisable_array, info
+		}
+	}
+
+
+	info = "3" //case won
+	return true, inVisable_array, info
 }
