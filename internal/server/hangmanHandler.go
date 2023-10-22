@@ -8,6 +8,15 @@ import (
 
 var AlreadyFoundLettersSlice []string
 
+func stringExistsInSlice(target string, slice []string) bool {
+    for _, element := range slice {
+        if element == target {
+            return true
+        }
+    }
+    return false
+}
+
 func HangmanHandler(inVisable_array []string, visable_array []string, word string, guess string) (bool, []string, string) { //return new blank list state, return if word found or not -> then server looked
 	var letterWasFound bool = false
 	fmt.Println(inVisable_array, visable_array, word, guess)
@@ -17,7 +26,7 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 		if !unicode.IsLetter(char) && !unicode.IsSpace(char) { 
 			info = fmt.Sprintf("'%v', '%v' is not a valid character, should be Alphabetic.", inVisable_array, string(char)) //case non-letter char
 			fmt.Println(info)
-			return false, inVisable_array, info
+			return true, inVisable_array, info
 		}
 	}
 
@@ -28,6 +37,14 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 		fmt.Println(info)
 		return false, inVisable_array, info
 	} else if len(guess) > 1 {
+		if AlreadyFoundLettersSlice == nil {
+			AlreadyFoundLettersSlice = []string{}
+		} 
+		if stringExistsInSlice(guess, AlreadyFoundLettersSlice) { //case letter already used not hurt hm
+			info = fmt.Sprintf("%v, You already tried using '%v'.", inVisable_array, guess)
+			return true, inVisable_array, info
+		}
+		AlreadyFoundLettersSlice = append(AlreadyFoundLettersSlice, guess)
 		if strings.EqualFold(guess, word) {
 			copy(inVisable_array[:], visable_array[:])
 			info = fmt.Sprintf("%v, You won! the word was %v", inVisable_array, word) //case won 3
@@ -41,6 +58,10 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 		//CASE ONE 1 LETTER
 		if AlreadyFoundLettersSlice == nil {
 			AlreadyFoundLettersSlice = []string{}
+		} 
+		if stringExistsInSlice(guess, AlreadyFoundLettersSlice) { //case letter already used not hurt hm
+			info = fmt.Sprintf("%v, You already tried using '%v'.", inVisable_array, guess)
+			return true, inVisable_array, info
 		}
 		AlreadyFoundLettersSlice = append(AlreadyFoundLettersSlice, guess)
 		fmt.Println(AlreadyFoundLettersSlice)
