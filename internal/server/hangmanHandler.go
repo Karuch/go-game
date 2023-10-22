@@ -6,10 +6,11 @@ import (
 	"strings"
 )
 
-func HangmanHandler(inVisable_array []string, visable_array []string, word string, guess string, test []string) (bool, []string, string) { //return new blank list state, return if word found or not -> then server looked
+var AlreadyFoundLettersSlice []string
+
+func HangmanHandler(inVisable_array []string, visable_array []string, word string, guess string) (bool, []string, string) { //return new blank list state, return if word found or not -> then server looked
 	var letterWasFound bool = false
 	fmt.Println(inVisable_array, visable_array, word, guess)
-	fmt.Println(test)
 	var info string;
 	//input validator
 	for _, char := range guess {
@@ -38,6 +39,11 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 		}
 	} else {
 		//CASE ONE 1 LETTER
+		if AlreadyFoundLettersSlice == nil {
+			AlreadyFoundLettersSlice = []string{}
+		}
+		AlreadyFoundLettersSlice = append(AlreadyFoundLettersSlice, guess)
+		fmt.Println(AlreadyFoundLettersSlice)
 		for index, _ := range visable_array {
 			if strings.EqualFold(guess, visable_array[index]) {
 				inVisable_array[index] = visable_array[index]
