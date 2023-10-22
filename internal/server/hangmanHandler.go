@@ -6,10 +6,10 @@ import (
 	"strings"
 )
 
-func HangmanHandler(inVisable_array []string, visable_array []string, word string, guess string, test *&[]string) (bool, []string, string) { //return new blank list state, return if word found or not -> then server looked
+func HangmanHandler(inVisable_array []string, visable_array []string, word string, guess string, test []string) (bool, []string, string) { //return new blank list state, return if word found or not -> then server looked
 	var letterWasFound bool = false
 	fmt.Println(inVisable_array, visable_array, word, guess)
-	append(test, "gay")
+	fmt.Println(test)
 	var info string;
 	//input validator
 	for _, char := range guess {

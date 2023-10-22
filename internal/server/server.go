@@ -9,8 +9,13 @@ import (
   "strings"
 )
 
+var AlreadyFoundLettersSlice []string
+
 func Server() {
-  AlreadyFoundLettersSlice := []string{}
+  if AlreadyFoundLettersSlice == nil {
+    fmt.Println("is nilllllll")
+    AlreadyFoundLettersSlice = []string{}
+  }
 	//initiallize blank and word list
 	var word string = "He llo"
 	visable_array := strings.Split(word, "")
@@ -27,6 +32,7 @@ func Server() {
   r := gin.Default()
   
   r.POST("/ping", func(c *gin.Context) {
+    AlreadyFoundLettersSlice = append(AlreadyFoundLettersSlice, "t")
     // Read the request body
     requestBody, err := c.GetRawData()
     if err != nil {
@@ -43,7 +49,7 @@ func Server() {
       // Now, str is a string containing the value.
       fmt.Println(str)
       
-      _, _, three := HangmanHandler(inVisable_array, visable_array, word, str, )
+      _, _, three := HangmanHandler(inVisable_array, visable_array, word, str, AlreadyFoundLettersSlice)
       fmt.Println(three)
     } else {
       // Handle the case where authors is not a string.
