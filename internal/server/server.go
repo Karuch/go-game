@@ -10,7 +10,7 @@ import (
 )
 
 func Server() {
-  
+  AlreadyFoundLettersSlice := []string{}
 	//initiallize blank and word list
 	var word string = "He llo"
 	visable_array := strings.Split(word, "")
@@ -42,8 +42,9 @@ func Server() {
       // Conversion was successful
       // Now, str is a string containing the value.
       fmt.Println(str)
-      one, two, three := HangmanHandler(inVisable_array, visable_array, word, str)
-      fmt.Println(one, two, three)
+      
+      _, _, three := HangmanHandler(inVisable_array, visable_array, word, str, )
+      fmt.Println(three)
     } else {
       // Handle the case where authors is not a string.
       fmt.Println("Conversion to string failed")
