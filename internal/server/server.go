@@ -9,6 +9,7 @@ import (
   "strings"
 )
 
+//GLOBAL
 func Server() {
 	//initiallize blank and word list
 	var word string = "He llo"
@@ -20,7 +21,6 @@ func Server() {
 		  inVisable_array[i] = "_"
     }
 	}
-	fmt.Println(inVisable_array, visable_array)
 
   //server
   r := gin.Default()
@@ -37,14 +37,10 @@ func Server() {
     var bookstore interface{}
     err = json.Unmarshal(requestBody, &bookstore)
     authors, err := allAuthors(bookstore)
-    if str, ok := authors.(string); ok {
-      fmt.Println(str)
-
-      _, _, three := HangmanHandler(inVisable_array, visable_array, word, str)
-      fmt.Println(three)
-      
-    } else {
-      // Handle the case where authors is not a string.
+    if str, ok := authors.(string); ok { //str is the input from client.go
+      DoNothurtHM, listState, info := HangmanHandler(inVisable_array, visable_array, word, str) //DoNotHurtHM false = hit him
+      fmt.Println(DoNothurtHM, listState, info)
+    } else { // Handle the case where authors is not a string.
       fmt.Println("Conversion to string failed")
     }
     
