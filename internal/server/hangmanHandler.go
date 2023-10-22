@@ -7,6 +7,24 @@ import (
 )
 
 var AlreadyFoundLettersSlice []string
+var life int
+
+func DrawHM(doNotHurtHM bool, listState []string, info string) string { //Glboal
+	if life == 0 {
+		life = 5
+	}
+    if !doNotHurtHM {
+		life = life - 1
+	}
+	return fmt.Sprintln(`
+	 %v
+	 |=======\     word: %v
+	 O        |    life: %v
+	\|/       |    
+	/ \       |
+	          |
+	`, listState, life, info)
+}
 
 func stringExistsInSlice(target string, slice []string) bool { //PRIVATE
     for _, element := range slice {
