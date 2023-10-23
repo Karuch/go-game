@@ -9,7 +9,8 @@ import (
 var AlreadyFoundLettersSlice []string
 var life int
 
-func DrawHM(doNotHurtHM bool, listState []string, info string) string { //Glboal
+//GLOBAL
+func DrawHM(doNotHurtHM bool, listState []string, info string) string { 
     formattedString := fmt.Sprintf(`
      %v
      |=======\     word: %v
@@ -21,7 +22,8 @@ func DrawHM(doNotHurtHM bool, listState []string, info string) string { //Glboal
 	return formattedString
 }
 
-func stringExistsInSlice(target string, slice []string) bool { //PRIVATE
+//PRIVATE
+func stringExistsInSlice(target string, slice []string) bool { 
     for _, element := range slice {
         if element == target {
             return true
@@ -82,7 +84,7 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 			}
 		}
 		if !letterWasFound { //case single letter is wrong
-			info = fmt.Sprintf("'%v' is an incorrect letter. HEREEEEE", guess)
+			info = fmt.Sprintf("'%v' is an incorrect letter.", guess)
 			return false, inVisable_array, info
 		}
 	}
@@ -95,7 +97,7 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 				return true, inVisable_array, info
 			}
 			
-			info = fmt.Sprintf("%v", inVisable_array) //case found _ in sentence means not complete
+			info = fmt.Sprintf("%v REACHEDDD", inVisable_array) //case found _ in sentence means not complete
 			return false, inVisable_array, info
 		}
 	}
