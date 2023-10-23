@@ -68,6 +68,10 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 		}
 	} else {
 		//CASE ONE 1 LETTER
+		if guess == " " { //handle single space input case
+			info = fmt.Sprintf("'space' alone is not a valid character.")
+			return true, inVisable_array, info
+		}
 		if AlreadyFoundLettersSlice == nil {
 			AlreadyFoundLettersSlice = []string{}
 		} 
