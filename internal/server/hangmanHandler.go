@@ -11,6 +11,12 @@ var life int
 
 //GLOBAL
 func DrawHM(doNotHurtHM bool, listState []string, info string) string { 
+	if life == 0 {
+		life = 10
+	}
+    if !doNotHurtHM {
+		life = life - 1
+	}
     formattedString := fmt.Sprintf(`
      %v
      |=======\     word: %v
