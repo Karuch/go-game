@@ -21,7 +21,7 @@ func main(){
 		SetBody(map[string]interface{}{"guess": test}).
 		SetResult("Success").    // or SetResult(AuthSuccess{}).
 		SetError("Error").       // or SetError(AuthError{}).
-		Post("http://127.0.0.1:8080/ping")
+		Post("http://127.0.0.1:8080/guess")
 
 		fmt.Println("Error:", err)
 		fmt.Println(resp)

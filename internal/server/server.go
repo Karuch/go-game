@@ -25,8 +25,7 @@ func Server() {
   //server
   r := gin.Default()
   
-  r.POST("/ping", func(c *gin.Context) {
-    
+  r.POST("/guess", func(c *gin.Context) {	
     requestBody, err := c.GetRawData()
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -37,9 +36,9 @@ func Server() {
     var bookstore interface{}
     err = json.Unmarshal(requestBody, &bookstore)
     authors, err := allAuthors(bookstore)
-    if str, ok := authors.(string); ok { //str is the input from client.go
-      DoNothurtHM, listState, info := HangmanHandler(inVisable_array, visable_array, word, str) //DoNotHurtHM false = hit him
-      c.String(http.StatusOK, DrawHM(DoNothurtHM, listState, info)) //will return to clien the result of hangmanhandler
+    if client_input, ok := authors.(string); ok { //str is the input from client.go
+      doNothurtHM, listState, info := HangmanHandler(inVisable_array, visable_array, word, client_input) //DoNotHurtHM false = hit him
+      c.String(http.StatusOK, DrawHM(doNothurtHM, listState, info)) //will return to clien the result of hangmanhandler
     } else { // Handle the case where authors is not a string.
       fmt.Println("Conversion to string failed")
     }
