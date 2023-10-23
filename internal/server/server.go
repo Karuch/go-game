@@ -41,11 +41,12 @@ func Server() {
       DoNothurtHM, listState, info := HangmanHandler(inVisable_array, visable_array, word, str) //DoNotHurtHM false = hit him
       //fmt.Println(DoNothurtHM, listState, info)
       fmt.Println(DrawHM(DoNothurtHM, listState, info))
+      c.String(http.StatusOK, DrawHM(DoNothurtHM, listState, info)) //will return to clien the result of hangmanhandler
     } else { // Handle the case where authors is not a string.
       fmt.Println("Conversion to string failed")
     }
     
-    c.JSON(http.StatusOK, gin.H{"message": "Request body received successfully"}) //will return to clien the result of hangmanhandler
+    
   }) 
   
   r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
