@@ -39,7 +39,7 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 	//input validator
 	for _, char := range guess {
 		if !unicode.IsLetter(char) && !unicode.IsSpace(char) { 
-			info = fmt.Sprintf("You have '%v' in '%v' is not a valid character, should be Alphabetic or Space.", string(char), guess) //case non-letter char
+			info = fmt.Sprintf("You have '%v' in '%v' which is not a valid character, should be Alphabetic or Space.", string(char), guess) //case non-letter char
 			return true, inVisable_array, info
 		}
 	}
@@ -100,9 +100,10 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 				info = fmt.Sprintf("Correct letter '%v'.", guess)
 				return true, inVisable_array, info
 			}
-			
-			info = fmt.Sprintf("%v REACHEDDD", inVisable_array) //case found _ in sentence means not complete
-			return false, inVisable_array, info
+			//info = fmt.Sprintf("%v REACHEDDD", inVisable_array) //case found _ in sentence means not complete
+			//return false, inVisable_array, info
+			//^ there's a good chance this case will never reach because the only one possibility for this is
+			//single wrong letter n "_" exists, which case single letter is wrong already handling, I'll ignore it for now
 		}
 	}
 
