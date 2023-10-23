@@ -39,7 +39,7 @@ func Server() {
     authors, err := allAuthors(bookstore)
     if str, ok := authors.(string); ok { //str is the input from client.go
       DoNothurtHM, listState, info := HangmanHandler(inVisable_array, visable_array, word, str) //DoNotHurtHM false = hit him
-      fmt.Println(DoNothurtHM, listState, info)
+      //fmt.Println(DoNothurtHM, listState, info)
       fmt.Println(DrawHM(DoNothurtHM, listState, info))
     } else { // Handle the case where authors is not a string.
       fmt.Println("Conversion to string failed")

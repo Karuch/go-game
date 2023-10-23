@@ -10,20 +10,15 @@ var AlreadyFoundLettersSlice []string
 var life int
 
 func DrawHM(doNotHurtHM bool, listState []string, info string) string { //Glboal
-	if life == 0 {
-		life = 5
-	}
-    if !doNotHurtHM {
-		life = life - 1
-	}
-	return fmt.Sprintln(`
-	 %v
-	 |=======\     word: %v
-	 O        |    life: %v
-	\|/       |    
-	/ \       |
-	          |
-	`, listState, life, info)
+    formattedString := fmt.Sprintf(`
+     %v
+     |=======\     word: %v
+     O        |    life: %v
+    \|/       |    
+    / \       |
+              |
+    `, info, listState, life)
+	return formattedString
 }
 
 func stringExistsInSlice(target string, slice []string) bool { //PRIVATE
@@ -42,7 +37,7 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 	//input validator
 	for _, char := range guess {
 		if !unicode.IsLetter(char) && !unicode.IsSpace(char) { 
-			info = fmt.Sprintf("'%v', '%v' is not a valid character, should be Alphabetic.", inVisable_array, string(char)) //case non-letter char
+			info = fmt.Sprintf("You have '%v' in '%v' is not a valid character, should be Alphabetic or Space.", string(char), guess) //case non-letter char
 			return true, inVisable_array, info
 		}
 	}
@@ -50,23 +45,23 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 
 	//result validator
 	if len(guess) <= 0 {
-		info = fmt.Sprintf("%v, You didn't entered anything, should be Alphabetic", inVisable_array) //case nothing was entered (X should include space right now space alone will return 3)
+		info = fmt.Sprintf("You didn't entered anything, should be Alphabetic") //case nothing was entered (X should include space right now space alone will return 3)
 		return false, inVisable_array, info
 	} else if len(guess) > 1 {
 		if AlreadyFoundLettersSlice == nil {
 			AlreadyFoundLettersSlice = []string{}
 		} 
 		if stringExistsInSlice(guess, AlreadyFoundLettersSlice) { //case letter already used not hurt hm
-			info = fmt.Sprintf("%v, You already tried using '%v'.", inVisable_array, guess)
+			info = fmt.Sprintf("You already tried using '%v'.", guess)
 			return true, inVisable_array, info
 		}
 		AlreadyFoundLettersSlice = append(AlreadyFoundLettersSlice, guess)
 		if strings.EqualFold(guess, word) {
 			copy(inVisable_array[:], visable_array[:])
-			info = fmt.Sprintf("%v, You won! the word was %v", inVisable_array, word) //case won 3
+			info = fmt.Sprintf("You won! the word was %v", word) //case won 3
 			return true, inVisable_array, info
 		} else {
-			info = fmt.Sprintf("%v, '%v' is an incorrect word.", inVisable_array, guess) //case 66 wrong full word
+			info = fmt.Sprintf("'%v' is an incorrect word.", guess) //case 66 wrong full word
 			return false, inVisable_array, info
 		}
 	} else {
@@ -75,7 +70,7 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 			AlreadyFoundLettersSlice = []string{}
 		} 
 		if stringExistsInSlice(guess, AlreadyFoundLettersSlice) { //case letter already used not hurt hm
-			info = fmt.Sprintf("%v, You already tried using '%v'.", inVisable_array, guess)
+			info = fmt.Sprintf("You already tried using '%v'.", guess)
 			return true, inVisable_array, info
 		}
 		AlreadyFoundLettersSlice = append(AlreadyFoundLettersSlice, guess)
@@ -84,10 +79,11 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 			if strings.EqualFold(guess, visable_array[index]) {
 				inVisable_array[index] = visable_array[index]
 				letterWasFound = true
-			} else if !letterWasFound { //case single letter is wrong
-				info = fmt.Sprintf("%v, '%v' is an incorrect letter.", inVisable_array, guess)
-				return false, inVisable_array, info
 			}
+		}
+		if !letterWasFound { //case single letter is wrong
+			info = fmt.Sprintf("'%v' is an incorrect letter. HEREEEEE", guess)
+			return false, inVisable_array, info
 		}
 	}
 
@@ -95,7 +91,7 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 	for _, element := range inVisable_array {
 		if element == "_" {
 			if letterWasFound { //CASE input letter is true
-				info = fmt.Sprintf("%v, Correct letter '%v'.", inVisable_array, guess)
+				info = fmt.Sprintf("Correct letter '%v'.", guess)
 				return true, inVisable_array, info
 			}
 			
@@ -104,6 +100,6 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 		}
 	}
 
-	info = fmt.Sprintf("%v, You won! the word was %v", inVisable_array, word) //case won 3
+	info = fmt.Sprintf("You won! the word was %v", word) //case won 3
 	return true, inVisable_array, info
 }
