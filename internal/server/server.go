@@ -24,7 +24,6 @@ func Server() {
 
   //server
   r := gin.Default()
-  
   r.POST("/guess", func(c *gin.Context) {	
     requestBody, err := c.GetRawData()
     if err != nil {
@@ -39,8 +38,10 @@ func Server() {
     if client_input, ok := authors.(string); ok { //str is the input from client.go
       doNothurtHM, listState, info := HangmanHandler(inVisable_array, visable_array, word, client_input) //DoNotHurtHM false = hit him
       drawing, life := DrawHM(doNothurtHM, listState, info)
-      if life < 6 { //can handle wrong guesses however not let head being printed
-        c.String(http.StatusOK, drawing, life) //will return to clien the result of hangmanhandler
+      if life < 6 {
+        c.String(http.StatusOK, drawing) //will return to clien the result of hangmanhandler
+      } else {
+        c.String(http.StatusOK, fmt.Sprintf("%v YOU LOSE!",drawing))
       }
     } else { // Handle the case where authors is not a string.
       fmt.Println("Conversion to string failed")

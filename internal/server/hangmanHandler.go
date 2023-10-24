@@ -8,11 +8,13 @@ import (
 
 var AlreadyFoundLettersSlice []string
 var life int = 0
+var drawLife int = 6
 
 //GLOBAL
 func DrawHM(doNotHurtHM bool, listState []string, info string) (string, int) { 
     if !doNotHurtHM {
 		life = life + 1
+		drawLife = drawLife - 1
 	}
 
 	blankPartsSlice := []string{" ", " ", " ", " ", " ", " "}
@@ -28,7 +30,7 @@ func DrawHM(doNotHurtHM bool, listState []string, info string) (string, int) {
     %v%v%v       |    
     %v %v       |
               
-    `, info, listState, blankPartsSlice[5], life, blankPartsSlice[0], blankPartsSlice[4],
+    `, info, listState, blankPartsSlice[5], drawLife, blankPartsSlice[0], blankPartsSlice[4],
 	blankPartsSlice[3], blankPartsSlice[2], blankPartsSlice[1])
 	return formattedString, life
 }
