@@ -10,7 +10,7 @@ var AlreadyFoundLettersSlice []string
 var life int = 0
 
 //GLOBAL
-func DrawHM(doNotHurtHM bool, listState []string, info string) string { 
+func DrawHM(doNotHurtHM bool, listState []string, info string) (string, int) { 
     if !doNotHurtHM {
 		life = life + 1
 	}
@@ -30,7 +30,7 @@ func DrawHM(doNotHurtHM bool, listState []string, info string) string {
               
     `, info, listState, blankPartsSlice[5], life, blankPartsSlice[0], blankPartsSlice[4],
 	blankPartsSlice[3], blankPartsSlice[2], blankPartsSlice[1])
-	return formattedString
+	return formattedString, life
 }
 
 //PRIVATE
