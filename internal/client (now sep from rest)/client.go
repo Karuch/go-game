@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	"fmt"
 	"github.com/go-resty/resty/v2"
 	"bufio"
@@ -25,6 +26,14 @@ func main(){
 
 		fmt.Println("Error:", err)
 		fmt.Println(resp)
+		respButString := fmt.Sprintf("%+v", resp) //change resp from struct to string so it
+		if strings.Contains(respButString, "YOU LOSE!") {  //will support strings.contains
+			fmt.Println("DONE LOSE...")
+			break
+		} else if strings.Contains(respButString, "You won! the word was") {
+			fmt.Println("DONE WON....")
+			break
+		}
 	}
 
 	
