@@ -47,6 +47,7 @@ func stringExistsInSlice(target string, slice []string) bool {
 
 //GLOBAL
 func HangmanHandler(inVisable_array []string, visable_array []string, word string, guess string) (bool, []string, string) { //return new blank list state, return if word found or not -> then server looked
+	guess = strings.ReplaceAll(guess, "\n", "") //buffer automatically adds enter at the end.
 	var letterWasFound bool = false
 	var info string;
 	//input validator
@@ -73,7 +74,7 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 		AlreadyFoundLettersSlice = append(AlreadyFoundLettersSlice, guess)
 		if strings.EqualFold(guess, word) {
 			copy(inVisable_array[:], visable_array[:])
-			info = fmt.Sprintf("You won! the word was %v", word) //case won 3
+			info = fmt.Sprintf("YOU WON! the word was %v", word) //case won 3
 			return true, inVisable_array, info
 		} else {
 			info = fmt.Sprintf("'%v' is an incorrect word.", guess) //case 66 wrong full word
@@ -120,6 +121,6 @@ func HangmanHandler(inVisable_array []string, visable_array []string, word strin
 		}
 	}
 
-	info = fmt.Sprintf("You won! the word was %v", word) //case won 3
+	info = fmt.Sprintf("YOU WON! the word was %v", word) //case won 3
 	return true, inVisable_array, info
 }

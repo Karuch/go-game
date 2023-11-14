@@ -1,54 +1,61 @@
 package server
 
 import (
-  "net/http"
-  "fmt"
-  "github.com/gin-gonic/gin"
-  "github.com/yalp/jsonpath"
-  "encoding/json"
-  "strings"
+    "bufio"
+    "fmt"
+    "net"
+    "strings"
 )
 
-//GLOBAL
-func Server() {
-	//initiallize blank and word list
-	var word string = "He llo"
-	visable_array := strings.Split(word, "")
-	inVisable_array := make([]string, len(visable_array))
-	copy(inVisable_array[:], visable_array[:])
-	for i := 0; i < len(inVisable_array); i++ {
-    if inVisable_array[i] != " " {
-		  inVisable_array[i] = "_"
-    }
-	}
+func handleConnection(conn net.Conn) {
+    defer conn.Close()
 
-  //server
-  r := gin.Default()
-  r.POST("/guess", func(c *gin.Context) {	
-    requestBody, err := c.GetRawData()
+    //initiallize blank and word list
+    var word string = "He llo"
+    visable_array := strings.Split(word, "")
+    inVisable_array := make([]string, len(visable_array))
+    copy(inVisable_array[:], visable_array[:])
+    for i := 0; i < len(inVisable_array); i++ {
+        if inVisable_array[i] != " " {
+            inVisable_array[i] = "_"
+        }
+    }
+
+    for {
+        client_input_no_space, err := bufio.NewReader(conn).ReadString('\n')
+        if err != nil {
+            fmt.Println("Error reading:", err.Error())
+            break
+        }
+        client_input := strings.ReplaceAll(client_input_no_space, "SPACE", " ")
+        fmt.Println("Message received:", strings.TrimSpace(client_input))
+        doNothurtHM, listState, info := HangmanHandler(inVisable_array, visable_array, word, client_input) //DoNotHurtHM false = hit him
+        drawing, life := DrawHM(doNothurtHM, listState, info)
+        drawing_for_send := strings.ReplaceAll(drawing, "\n", "ENTER")
+        if life < 6 {
+            conn.Write([]byte(drawing_for_send+"\n")) // Respond to the client
+        } else {
+            conn.Write([]byte(fmt.Sprintf("%v YOU LOSE!"+"\n",drawing_for_send))) // Respond to the client
+        }
+    }
+}
+
+func Server() {
+    fmt.Println("Starting server...")
+
+    listener, err := net.Listen("tcp", "localhost:8080")
     if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        fmt.Println("Error listening:", err.Error())
         return
     }
+    defer listener.Close()
 
-    allAuthors, err := jsonpath.Prepare("$.guess")
-    var bookstore interface{}
-    err = json.Unmarshal(requestBody, &bookstore)
-    authors, err := allAuthors(bookstore)
-    if client_input, ok := authors.(string); ok { //str is the input from client.go
-      doNothurtHM, listState, info := HangmanHandler(inVisable_array, visable_array, word, client_input) //DoNotHurtHM false = hit him
-      drawing, life := DrawHM(doNothurtHM, listState, info)
-      if life < 6 {
-        c.String(http.StatusOK, drawing) //will return to clien the result of hangmanhandler
-      } else {
-        c.String(http.StatusOK, fmt.Sprintf("%v YOU LOSE!",drawing))
-      }
-    } else { // Handle the case where authors is not a string.
-      fmt.Println("Conversion to string failed")
+    for {
+        conn, err := listener.Accept()
+        if err != nil {
+            fmt.Println("Error accepting: ", err.Error())
+            return
+        }
+        go handleConnection(conn)
     }
-    
-    
-  }) 
-  
-  r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
