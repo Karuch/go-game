@@ -35,6 +35,7 @@ func HttpGetHandler(url string){
         fmt.Println("Error:", err)
         return
     }
+    //resp.Header.Add("Authorization", "Bearer "+"TOKEN") 
     defer resp.Body.Close() // Don't forget to close the response body
     // Reading the response body
     body, err := ioutil.ReadAll(resp.Body)
@@ -45,6 +46,45 @@ func HttpGetHandler(url string){
     // Printing the response body
     fmt.Println(string(body))
 }
+
+
+
+func HttpGetHandlerFIX(url string, token string) {
+    // Create a new request using http
+    req, err := http.NewRequest("GET", url, nil)
+    if err != nil {
+        fmt.Println("Error creating request:", err)
+        return
+    }
+
+    // Add the authorization header to the request
+    req.Header.Add("Authorization", "Bearer " + "TOKEN")
+
+    // Send the request using http.Client
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    if err != nil {
+        fmt.Println("Error sending request:", err)
+        return
+    }
+    defer resp.Body.Close() // Don't forget to close the response body
+
+    // Reading the response body
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        fmt.Println("Error reading body:", err)
+        return
+    }
+
+    // Printing the response body
+    fmt.Println(string(body))
+}
+
+
+
+
+
+
 
 func HttpPostHandler(){
     type RequestData struct {
