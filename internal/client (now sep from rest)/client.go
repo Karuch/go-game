@@ -1,14 +1,25 @@
 package main
 
 import (
-    "bufio"
-    "fmt"
-    "net"
-    "os"
-    "strings"
+	"bufio"
+	"client/functions"
+	"fmt"
+	"net"
+	"os"
+	"strings"
 )
 
 func main() {
+
+    client.WriteToFile("have a wonderful day!", ".\\file.txt")
+    fmt.Println(client.ReadFile(".\\file.txt"))
+    client.HttpPostHandler()
+
+
+
+
+
+
     conn, err := net.Dial("tcp", "localhost:8080")
     if err != nil {
         fmt.Println("Error connecting:", err.Error())
