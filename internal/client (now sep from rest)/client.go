@@ -11,7 +11,7 @@ import (
 
 func main() {
 
-    client.WriteToFile("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbjMiLCJleHAiOjE2MzAwMDAwMDB9.RS5MZ1l4Ym9Qd2dKZXBTMW5PVHJQZz10", ".\\file.txt")
+    //client.WriteToFile("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbjMiLCJleHAiOjE2MzAwMDAwMDB9.RS5MZ1l4Ym9Qd2dKZXBTMW5PVHJQZz10", ".\\file.txt")
     client.HttpGetHandlerFIX("http://localhost:8080/health", client.ReadFile(".\\file.txt"))
 
 

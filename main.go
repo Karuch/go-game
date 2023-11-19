@@ -1,8 +1,12 @@
 package main
 
-import "main/internal/server"
+import (
+	"main/internal/authserver"
+	"main/internal/authserver/jwthandling/creator"
+)
 
 func main(){
-    server.AuthServer()
+    creator.Creator(2)
+    authserver.AuthServer()
     //server.Server()
 }

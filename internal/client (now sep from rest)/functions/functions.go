@@ -58,7 +58,7 @@ func HttpGetHandlerFIX(url string, token string) {
     }
 
     // Add the authorization header to the request
-    req.Header.Add("Authorization", "Bearer " + "TOKEN")
+    req.Header.Add("Authorization", "Bearer " + token)
 
     // Send the request using http.Client
     client := &http.Client{}
