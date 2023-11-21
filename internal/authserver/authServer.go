@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
     "fmt"
+    "main/internal/authserver/jwthandling/validator"
 )
 
 type RequestData struct {
@@ -15,17 +16,27 @@ type RequestData struct {
 func AuthServer() {
 	r := gin.Default()
 	r.GET("/health", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "looks good.",
-		})
+		//c.JSON(200, gin.H{
+		//	"message": "looks gooddddd.",
+		//})
         fmt.Println("auth:", c.GetHeader("Authorization"))
-        if c.GetHeader("Authorization") != "Bearer 1" {
+        if validator.Validator_accesstoken(c.GetHeader("Authorization")) {
             fmt.Println("ACCESS TOKEN IS VALID | WILL ALLOW SESSION ACCESS")
-        } else if c.GetHeader("Authorization") != "test" {
+            //c.JSON(200, gin.H{
+            //    "message": "Access GOOD.",
+            //})
+        } else if validator.Validator_refreshtoken(c.GetHeader("Authorization")) {
             fmt.Println("REFRESH TOKEN IS VALID | WILL GENEREATE ACCESS TOKEN WITH REFRESH ID THEN ASK CLIENT FOR ACCESS")
-        } else if "" == "" { //case client was not found any token in it's then ask server for new refresh
+            //c.JSON(200, gin.H{
+            //    "message": "Refresh GOOD.",
+            //})
+        } else { //case client was not found any token in it's then ask server for new refresh
             fmt.Println("WILL GENERATE TOKEN")
+            //c.JSON(200, gin.H{
+            //    "message": "BADXXXXXXXXXXXXXXXXXXX.",
+            //})
         }
+        fmt.Println("reach")
 	})
     r.POST("/", func(c *gin.Context) {
         var data RequestData

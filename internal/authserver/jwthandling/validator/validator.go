@@ -2,7 +2,7 @@ package validator
 
 import (
     "main/internal/authserver/jwthandling/service"
-    "log"
+    //"log"
     "fmt"
     "github.com/golang-jwt/jwt"
     "time"
@@ -10,21 +10,23 @@ import (
 
 //var request_token string =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDAyMDkyMjIsImlhdCI6MTcwMDAzNjQyMn0.lwwUmZxzGSBDfybffSZVRmaNgEKt4I5nAwzCgRrNaOg" 
 
-func Validator_refreshtoken(request_token string) {
+func Validator_refreshtoken(request_token string) bool {
     refreshClaims := service.ParseRefreshToken(request_token)
 
-    var err error
+    //var err error
 
-    if validErr := refreshClaims.Valid(); validErr == nil {
+    if validErr := refreshClaims.Valid(); validErr == nil { //just check if refreshclaims return error or not if not
         // Refresh token is valid
         fmt.Println("REFRESH TOKEN IS VALIDDDDDDDDDDDDDDDDDDDDDDDD")
+        return true
     } else {
         // Refresh token is not valid
         fmt.Println("REFRESH TOKEN IS NOT VALIDDDDDDDDDDDDDDDD")
-        request_token, err = service.NewRefreshToken(*refreshClaims)
-        if err != nil {
-            log.Fatal("error creating refresh token")
-        }
+        //request_token, err = service.NewRefreshToken(*refreshClaims)
+        //if err != nil {
+        //    log.Fatal("error creating refresh token")
+        //}
+        return false
     }
     
 
@@ -32,21 +34,21 @@ func Validator_refreshtoken(request_token string) {
 }
 
 
-func Validator_accesstoken(access_token string) {
-  accessClaims := service.ParseAccessToken(access_token)
-
-  var err error
-
-  if validErr := accessClaims.Valid(); validErr == nil {
+func Validator_accesstoken(access_token string) bool { 
+  accessClaims, err := service.ParseAccessToken(access_token)
+  //var err error
+  if validErr := accessClaims.Valid(); validErr == nil && err == nil { //just check if accessclaims returns error or not
       // Refresh token is valid
       fmt.Println("ACCESS TOKEN IS VALIDDDDDDDDDDDDDDDDDDDDDDDD")
+      return true
   } else {
       // Refresh token is not valid
       fmt.Println("ACCESS TOKEN NOT VALIDDDDDDDDDDDDDDDD")
-      access_token, err = service.NewAccessToken(*accessClaims)
-      if err != nil {
-          log.Fatal("error creating access token")
-      }
+      //access_token, err = service.NewAccessToken(*accessClaims)
+      //if err != nil {
+      //    log.Fatal("error creating access token")
+      //}
+      return false
   }
 }
 
