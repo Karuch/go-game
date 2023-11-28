@@ -11,10 +11,11 @@ import (
 //var request_token string =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDAyMDkyMjIsImlhdCI6MTcwMDAzNjQyMn0.lwwUmZxzGSBDfybffSZVRmaNgEKt4I5nAwzCgRrNaOg" 
 
 func Validator_refreshtoken(request_token string) bool {
-    refreshClaims := service.ParseRefreshToken(request_token)
-
+    refreshClaims, err := service.ParseRefreshToken(request_token)
+    if err != nil {
+        return false
+    }
     //var err error
-
     if validErr := refreshClaims.Valid(); validErr == nil { //just check if refreshclaims return error or not if not
         // Refresh token is valid
         fmt.Println("REFRESH TOKEN IS VALIDDDDDDDDDDDDDDDDDDDDDDDD")
@@ -35,13 +36,17 @@ func Validator_refreshtoken(request_token string) bool {
 
 
 func Validator_accesstoken(access_token string) bool { 
+  fmt.Println("hereeee1")
   accessClaims, err := service.ParseAccessToken(access_token)
-  //var err error
-  if validErr := accessClaims.Valid(); validErr == nil && err == nil { //just check if accessclaims returns error or not
+  if err != nil {
+    return false
+  }
+  fmt.Println("hereeee2")
+  if validErr := accessClaims.Valid(); validErr == nil { //just check if accessclaims returns error or not
       // Refresh token is valid
       fmt.Println("ACCESS TOKEN IS VALIDDDDDDDDDDDDDDDDDDDDDDDD")
       return true
-  } else {
+  } else { 
       // Refresh token is not valid
       fmt.Println("ACCESS TOKEN NOT VALIDDDDDDDDDDDDDDDD")
       //access_token, err = service.NewAccessToken(*accessClaims)

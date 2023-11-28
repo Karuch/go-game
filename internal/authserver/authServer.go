@@ -32,9 +32,9 @@ func AuthServer() {
             //})
         } else { //case client was not found any token in it's then ask server for new refresh
             fmt.Println("WILL GENERATE TOKEN")
-            //c.JSON(200, gin.H{
-            //    "message": "BADXXXXXXXXXXXXXXXXXXX.",
-            //})
+            c.JSON(200, gin.H{
+                "message": "BADXXXXXXXXXXXXXXXXXXX.",
+            })
         }
         fmt.Println("reach")
 	})
