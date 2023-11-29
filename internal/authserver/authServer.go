@@ -22,18 +22,18 @@ func AuthServer() {
         fmt.Println("auth:", c.GetHeader("Authorization"))
         if validator.Validator_accesstoken(c.GetHeader("Authorization")) {
             fmt.Println("ACCESS TOKEN IS VALID | WILL ALLOW SESSION ACCESS")
-            //c.JSON(200, gin.H{
-            //    "message": "Access GOOD.",
-            //})
+            c.JSON(200, gin.H{
+                "serverAnswer": "GoodAccessToken", //allow access using accesstoken ID SHOULD BE NEXT STEP KARUCH
+            })
         } else if validator.Validator_refreshtoken(c.GetHeader("Authorization")) {
             fmt.Println("REFRESH TOKEN IS VALID | WILL GENEREATE ACCESS TOKEN WITH REFRESH ID THEN ASK CLIENT FOR ACCESS")
-            //c.JSON(200, gin.H{
-            //    "message": "Refresh GOOD.",
-            //})
+            c.JSON(200, gin.H{
+                "serverAnswer": "needAccessToken",
+            })
         } else { //case client was not found any token in it's then ask server for new refresh
             fmt.Println("WILL GENERATE TOKEN")
             c.JSON(200, gin.H{
-                "message": "BADXXXXXXXXXXXXXXXXXXX.",
+                "serverAnswer": "needRefreshToken",
             })
         }
         fmt.Println("reach")

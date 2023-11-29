@@ -116,10 +116,10 @@ func ReadFile(path string) string {
 	if err != nil {
 		fmt.Printf("Could not read the content in the file due to %v", err)
 		if strings.Contains(path, "Access") {
-			WriteToFile(HttpGetHandlerFIX("http://localhost:8080/health", "Access Failed"), ".\\AccessToken.txt") //here I'll write the token from the server default is None
+			WriteToFile(HttpGetHandlerFIX("http://localhost:8080/health", "accessTokenPlease"), ".\\AccessToken.txt") //here I'll write the token from the server default is None
 			return ReadFile(path)
 		} else if strings.Contains(path, "Refresh") {
-			WriteToFile(HttpGetHandlerFIX("http://localhost:8080/health", "Refresh Failed"), ".\\RefreshToken.txt") //here I'll write the token from the server default is None
+			WriteToFile(HttpGetHandlerFIX("http://localhost:8080/health", "RefreshTokenPlease"), ".\\RefreshToken.txt") //here I'll write the token from the server default is None
 			return ReadFile(path)
 		}
 	}
